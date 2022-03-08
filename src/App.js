@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [matrix, setMatrix] = useState([
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ]);
+  const [highValue, sethighValue] = useState(0);
+  const [secondValue, setSecondValue] = useState(0);
+  const [counter, setCounter] = useState(0);
+
+  const clickHandler = (rowIndex, colIndex) => {
+    let newMatrix = [...matrix];
+    matrix[rowIndex][colIndex] = counter + 1;
+    setCounter(counter + 1);
+    setSecondValue(highValue);
+    sethighValue(rowIndex + "" + colIndex);
+    setMatrix(newMatrix);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {matrix.map((row, index) => (
+        <div className="row" key={index}>
+          {row.map((col, colIndex) => (
+            <div
+              key={index + colIndex}
+              className={`col ${
+                (index + "" + colIndex === highValue ||
+                  index + "" + colIndex === secondValue) &&
+                "red"
+              }`}
+              onClick={(e) => clickHandler(index, colIndex)}
+            >
+              {col !== 0 && `Box ${col}`}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
